@@ -1,5 +1,5 @@
-import HeaderPresenter from "./presenter/header-presenter.js";
-import MainPresenter from "./presenter/main-presenter.js";
+import HeaderPresenter from './presenter/header-presenter.js';
+import MainPresenter from './presenter/main-presenter.js';
 
 const headerTripMainContainer = document.querySelector('.trip-main');
 const headerFilterContainer = document.querySelector('.trip-controls__filters');
