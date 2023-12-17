@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 
-function addItemTemplate() {
+function createAddItemTemplate() {
   return (
     `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -148,7 +148,7 @@ function addItemTemplate() {
 
 export default class AddItemView {
   getTemplate() {
-    return addItemTemplate();
+    return createAddItemTemplate();
   }
 
   getElement() {
