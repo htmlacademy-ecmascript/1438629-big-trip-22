@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 import {DATE_FORMAT, EVENTS_TYPES} from '../constants.js';
-import {getElementByType, getElementById, humanizeTaskDueDate, toUpperCaseFirstSign} from '../utils.js';
+import {humanizeTaskDueDate, toUpperCaseFirstSign} from '../utils.js';
 
 function createEventTypeTemplate(type, checkedType, id) {
   const isChecked = checkedType === type ? 'checked' : false;
@@ -65,7 +65,7 @@ function createPhotoContainerTemplate(pictures) {
 }
 
 function createDestinationTemplate(destination) {
-  const {description, pictures} = destination || {};
+  const {description = 'Default Description', pictures = []} = destination;
 
   if (description.length > 0 || pictures.length > 0) {
     return (
@@ -80,11 +80,10 @@ function createDestinationTemplate(destination) {
   return '';
 }
 
-function createEditItemTemplate(destinations, eventPoints, offers) {
-  const {basePrice, dateFrom, dateTo, type, id, offers: checkedOffers, destination: idDestination} = eventPoints;
-  const {name: name} = destinations[0];
-  const offersFilteredByType = getElementByType(offers, type);
-  const filteredDestinationById = getElementById(destinations, idDestination);
+function createEditItemTemplate(destinations, eventPoints, offers, selectedOffers, selectedDestination) {
+
+  const {basePrice, dateFrom, dateTo, type, id, offers: checkedOffers} = eventPoints;
+  const {name: destinationName} = destinations[0];
   return (
     `<li class="trip-events__item">
         <form class="event event--edit" action="#" method="post">
@@ -106,7 +105,7 @@ function createEditItemTemplate(destinations, eventPoints, offers) {
               <label class="event__label  event__type-output" for="event-destination-${id}">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${name}" list="destination-list-${id}">
+              <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${destinationName}" list="destination-list-${id}">
               <datalist id="destination-list-${id}">
                ${destinations.map((item) => `<option value=${item.name}></option>`)}
               </datalist>
@@ -132,8 +131,8 @@ function createEditItemTemplate(destinations, eventPoints, offers) {
             </button>
           </header>
           <section class="event__details">
-            ${createOfferListTemplate(offersFilteredByType, checkedOffers)}
-            ${createDestinationTemplate(filteredDestinationById)}
+            ${createOfferListTemplate(selectedOffers, checkedOffers)}
+            ${createDestinationTemplate(selectedDestination)}
           </section>
         </form>
       </li>`
@@ -141,14 +140,16 @@ function createEditItemTemplate(destinations, eventPoints, offers) {
 }
 
 export default class EditItemView {
-  constructor({destinations, eventPoints, offers}) {
+  constructor({destinations, eventPoints, offers, selectedOffers, selectedDestination}) {
     this.destinations = destinations;
     this.eventPoints = eventPoints;
     this.offers = offers;
+    this.selectedOffers = selectedOffers;
+    this.selectedDestination = selectedDestination;
   }
 
   getTemplate() {
-    return createEditItemTemplate(this.destinations, this.eventPoints, this.offers);
+    return createEditItemTemplate(this.destinations, this.eventPoints, this.offers, this.selectedOffers, this.selectedDestination);
   }
 
   getElement() {
