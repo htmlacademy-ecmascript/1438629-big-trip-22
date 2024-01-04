@@ -3,7 +3,6 @@ import ListSortView from '../view/list-sort-view.js';
 import TripListView from '../view/trip-list-view.js';
 import TripItemView from '../view/trip-item-view.js';
 import EditItemView from '../view/edit-item-view.js';
-import AddItemView from '../view/add-item-view.js';
 
 export default class MainPresenter {
   #tripContainer = null;
@@ -28,11 +27,7 @@ export default class MainPresenter {
   init() {
     render(this.#sortComponent, this.#tripContainer);
     render(this.#tripListComponent, this.#tripContainer);
-    render(new AddItemView({
-      destinations: this.#destinations,
-      eventPoints: this.#eventPoints,
-      allOffers: this.#offersModel.getByType(this.#eventPoints[0].type)
-    }), this.#tripListComponent.element);
+
     this.#eventPoints.forEach((eventPoint) => {
       const destination = this.#destinationModel.getById(eventPoint.destination);
       this.#renderEventPoint(this.#destinations, destination, eventPoint, this.#offersModel.getByType(eventPoint.type));
