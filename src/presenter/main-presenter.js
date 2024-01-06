@@ -3,6 +3,7 @@ import ListSortView from '../view/list-sort-view.js';
 import TripListView from '../view/trip-list-view.js';
 import TripItemView from '../view/trip-item-view.js';
 import EditItemView from '../view/edit-item-view.js';
+import EmptyEventPointBoard from '../view/no-event-pints-view.js';
 
 export default class MainPresenter {
   #tripContainer = null;
@@ -27,6 +28,12 @@ export default class MainPresenter {
   init() {
     render(this.#sortComponent, this.#tripContainer);
     render(this.#tripListComponent, this.#tripContainer);
+
+    if (!this.#eventPoints.length) {
+      render(new EmptyEventPointBoard(), this.#tripContainer);
+
+      return;
+    }
 
     this.#eventPoints.forEach((eventPoint) => {
       const destination = this.#destinationModel.getById(eventPoint.destination);
@@ -85,6 +92,7 @@ export default class MainPresenter {
     function editPointSubmitHandler() {
       replaceEditFormToPoint();
     }
+
     render(eventPointComponent, this.#tripListComponent.element);
   }
 }
