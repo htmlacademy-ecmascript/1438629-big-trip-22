@@ -13,13 +13,11 @@ dayjs.extend(minMax);
 
 let randomDate = dayjs().subtract(getRandomNumber(0, DURATIONS.DAY), 'day').toDate();
 
-const getDate = ({
-  next
-}) => {
+const getDate = ({next}) => {
   const daysInterval = getRandomNumber(0, DURATIONS.DAY);
   const hoursInterval = getRandomNumber(1, DURATIONS.HOUR);
   const minsInterval = getRandomNumber(0, DURATIONS.MINUTE);
-  if(next) {
+  if (next) {
     randomDate = dayjs(randomDate)
       .add(minsInterval, 'minute')
       .add(hoursInterval, 'hour')
@@ -33,6 +31,7 @@ const getDate = ({
 function humanizeTaskDueDate(date, format) {
   return date ? dayjs(date).format(format) : '';
 }
+
 //получение разницы времени
 function getDifferenceInTime(start, end) {
   const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
@@ -49,13 +48,22 @@ function getDifferenceInTime(start, end) {
   }
 }
 
-function toUpperCaseFirstSign (item) {
+function toUpperCaseFirstSign(item) {
   return item.charAt(0).toUpperCase() + item.substring(1);
 }
+
+const isPastDate = (date) => dayjs(date).isBefore(dayjs());
+
+const isPresentDate = (date) => dayjs(date).isSame(dayjs(), 'day');
+
+const isFutureDate = (date) => dayjs(date).isAfter(dayjs());
 
 export {
   humanizeTaskDueDate,
   getDifferenceInTime,
   getDate,
-  toUpperCaseFirstSign
+  toUpperCaseFirstSign,
+  isPastDate,
+  isPresentDate,
+  isFutureDate
 };
