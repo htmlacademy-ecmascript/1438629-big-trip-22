@@ -1,5 +1,3 @@
-import {getRandomIntFromDuration} from "./utils/common";
-
 const START_ID_COUNTER = 1;
 const MAX_IMAGES_COUNT = 5;
 const MAX_PRICE_VALUE = 200;

@@ -20,7 +20,6 @@ function createSortTypeListTemplate(types) {
 }
 
 function createListSortTemplate() {
-  console.log(SORT_TYPES)
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
         ${createSortTypeListTemplate(SORT_TYPES)}
