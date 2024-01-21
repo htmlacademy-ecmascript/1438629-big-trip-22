@@ -18,10 +18,12 @@ function incrementCounter(startFrom) {
 
 const getRandomIntFromDuration = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
+const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
 
 export {
   getRandomArrayElement,
   incrementCounter,
   getRandomNumber,
-  getRandomIntFromDuration
+  getRandomIntFromDuration,
+  updateItem
 };
