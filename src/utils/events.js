@@ -6,7 +6,7 @@ import {
   HOURS_IN_DAY,
   MILLISECONDS_IN_MINUTES,
   SECONDS_IN_MINUTES,
-  DURATIONS
+  DURATIONS,
 } from '../constants.js';
 
 dayjs.extend(minMax);
@@ -52,18 +52,9 @@ function toUpperCaseFirstSign(item) {
   return item.charAt(0).toUpperCase() + item.substring(1);
 }
 
-const isPastDate = (date) => dayjs(date).isBefore(dayjs());
-
-const isPresentDate = (date) => dayjs(date).isSame(dayjs(), 'day');
-
-const isFutureDate = (date) => dayjs(date).isAfter(dayjs());
-
 export {
   humanizeTaskDueDate,
   getDifferenceInTime,
   getDate,
   toUpperCaseFirstSign,
-  isPastDate,
-  isPresentDate,
-  isFutureDate
 };
