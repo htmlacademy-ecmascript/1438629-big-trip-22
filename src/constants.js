@@ -5,34 +5,7 @@ const MAX_PRICE_OFFER = 40;
 const MILLISECONDS_IN_MINUTES = 60000;
 const SECONDS_IN_MINUTES = 60;
 const HOURS_IN_DAY = 12;
-const MONTH_COUNT = 12;
-const SORT_TYPES = [
-  {
-    type: 'day',
-    isDisabled: false,
-    isChecked: true,
-  },
-  {
-    type: 'event',
-    isDisabled: false,
-    isChecked: false,
-  },
-  {
-    type: 'time',
-    isDisabled: false,
-    isChecked: false,
-  },
-  {
-    type: 'price',
-    isDisabled: false,
-    isChecked: false,
-  },
-  {
-    type: 'offers',
-    isDisabled: true,
-    isChecked: false,
-  }
-];
+
 const EVENTS_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const DATE_FORMAT = {
   DAY_MONTH: 'D MMM',
@@ -87,6 +60,22 @@ const MODE = {
   EDITING: 'EDITING',
 };
 
+const SORT_TYPES = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer'
+};
+
+const ENABLED_SORT_TYPES = {
+  [SORT_TYPES.DAY]: true,
+  [SORT_TYPES.EVENT]: false,
+  [SORT_TYPES.TIME]: true,
+  [SORT_TYPES.PRICE]: true,
+  [SORT_TYPES.OFFER]: false,
+};
+
 export {
   START_ID_COUNTER,
   DESCRIPTIONS,
@@ -100,10 +89,10 @@ export {
   MILLISECONDS_IN_MINUTES,
   SECONDS_IN_MINUTES,
   HOURS_IN_DAY,
-  SORT_TYPES,
   FILTERS_TYPE,
-  MONTH_COUNT,
   DURATIONS,
   OFFER_COUNT,
-  MODE
+  MODE,
+  SORT_TYPES,
+  ENABLED_SORT_TYPES
 };

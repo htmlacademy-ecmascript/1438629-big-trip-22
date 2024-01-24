@@ -1,9 +1,11 @@
 import { render } from '../framework/render.js';
 import { updateItem } from '../utils/common.js';
 import EmptyEventPointBoard from '../view/no-event-pints-view.js';
-import ListSortView from '../view/list-sort-view.js';
 import TripListView from '../view/trip-list-view.js';
 import PointPresenter from './point-presenter.js';
+import { SORT_TYPES } from '../constants.js';
+import SortPresenter from './sort-presenter.js';
+import {sorting} from '../utils/sort.js';
 
 export default class PointsPresenter {
   #tripContainer = null;
@@ -13,6 +15,8 @@ export default class PointsPresenter {
   #tripListComponent = new TripListView();
   #eventPoints = [];
   #pointsPresenter = new Map();
+  #currentSortType = null;
+  #defaultSortType = SORT_TYPES.DAY;
 
   constructor ({ tripContainer, destinationModel, eventPointsModel, offersModel }) {
     this.#tripContainer = tripContainer;
@@ -33,19 +37,39 @@ export default class PointsPresenter {
     this.#renderTripList();
   }
 
+  #sortPoints = (sortType) => {
+    this.#currentSortType = sortType;
+    this.#eventPoints = sorting[this.#currentSortType](this.#eventPoints);
+  };
+
+  #clearPoints = () => {
+    this.#pointsPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointsPresenter.clear();
+  };
+
   #handleDataChange = (updatedPoint) => {
     this.#eventPoints = updateItem(this.#eventPoints, updatedPoint);
     this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
   #renderSort() {
-    render(new ListSortView(), this.#tripContainer);
+    const sortPresenter = new SortPresenter({
+      container: this.#tripContainer,
+      sortTypeHandler: this.#sortTypesChangeHandler,
+    });
+    sortPresenter.init();
   }
 
   #renderTripList() {
     render(this.#tripListComponent, this.#tripContainer);
-    this.#renderPoints();
+    this.#sortTypesChangeHandler(this.#defaultSortType);
   }
+
+  #sortTypesChangeHandler = (sortType) => {
+    this.#sortPoints(sortType);
+    this.#clearPoints();
+    this.#renderPoints();
+  };
 
   #handleModeChange = () => {
     this.#pointsPresenter.forEach((presenter) => presenter.resetView());

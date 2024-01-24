@@ -1,5 +1,5 @@
-import { render, replace, remove } from '../framework/render.js';
-import { MODE } from '../constants.js';
+import {render, replace, remove} from '../framework/render.js';
+import {MODE} from '../constants.js';
 import EditItemView from '../view/edit-item-view.js';
 import TripItemView from '../view/trip-item-view.js';
 
@@ -14,7 +14,7 @@ export default class PointPresenter {
   #handleModeChange = null;
   #mode = MODE.DEFAULT;
 
-  constructor ({ pointListContainer, destinationModel, offersModel, onPointChange, onModeChange }) {
+  constructor({pointListContainer, destinationModel, offersModel, onPointChange, onModeChange}) {
     this.#pointListContainer = pointListContainer;
     this.#destinationModel = destinationModel;
     this.#offersModel = offersModel;
@@ -80,7 +80,7 @@ export default class PointPresenter {
   };
 
   #replacePointToForm() {
-    replace(this.#editPointComponent , this.#pointComponent);
+    replace(this.#editPointComponent, this.#pointComponent);
     this.#handleModeChange();
     this.#mode = MODE.EDITING;
   }
