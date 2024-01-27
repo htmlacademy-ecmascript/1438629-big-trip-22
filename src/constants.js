@@ -32,6 +32,8 @@ const CITIES = [
   'Yoshkar-Ola',
   'Saint Petersburg',
   'Kirov',
+  'Kazan',
+  'Paris'
 ];
 
 const OFFER_COUNT = {
