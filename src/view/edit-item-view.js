@@ -1,6 +1,6 @@
 import {DATE_FORMAT, EVENTS_TYPES} from '../constants.js';
 import {humanizeTaskDueDate, toUpperCaseFirstSign} from '../utils/events.js';
-import AbstractStatefulView from "../framework/view/abstract-stateful-view";
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 function createDestinationOptionTemplate(destinations) {
   return destinations.map((destination) => (
@@ -35,7 +35,6 @@ function createOfferTemplate(offer, isChecked) {
 }
 
 function createOfferListTemplate(offers, checkedOffers) {
-  console.log(offers)
   if (offers.length !== 0) {
     return (
       `<section class="event__section  event__section--offers">
@@ -195,9 +194,9 @@ export default class EditItemView extends AbstractStatefulView {
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.element.querySelector('.event__available-offers')?.addEventListener('change', this.#offersChangeHandler);
   };
+
   #offersChangeHandler = () => {
     const checkedOffers = this.element.querySelectorAll('.event__offer-checkbox:checked');
-
     this._setState({
       ...this._state,
       offers: [...checkedOffers].map((item) => item.dataset.id)
