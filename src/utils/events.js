@@ -4,7 +4,6 @@ import minMax from 'dayjs/plugin/minMax.js';
 import {
   DATE_FORMAT,
   HOURS_IN_DAY,
-  MILLISECONDS_IN_MINUTES,
   SECONDS_IN_MINUTES,
   DURATIONS,
 } from '../constants.js';
@@ -33,7 +32,7 @@ function humanizeTaskDueDate(date, format) {
 }
 
 //получение разницы времени
- function getDifferenceInTime(start, dateTo) {
+function getDifferenceInTime(start, dateTo) {
   const difference = dayjs(dateTo).diff(start) / SECONDS_IN_MINUTES;
 
   if (difference < SECONDS_IN_MINUTES) {

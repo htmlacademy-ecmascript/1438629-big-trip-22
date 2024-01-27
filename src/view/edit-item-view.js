@@ -250,7 +250,7 @@ export default class EditItemView extends AbstractStatefulView {
         firstDayOfWeek: 1,
       },
       'time_24hr': true,
-    }
+    };
     this.#datePickerFrom = flatpickr(startDateNode, {
       ...flatPickerConfig,
       defaultDate: this._state.dateFrom,
@@ -264,7 +264,7 @@ export default class EditItemView extends AbstractStatefulView {
       onChange: this.#closeEndDateHandler,
       minDate: this._state.dateFrom,
     });
-  }
+  };
 
   #closeStartDateHandler = ([selectedDate]) => {
     this._setState({
