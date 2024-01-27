@@ -33,18 +33,15 @@ function humanizeTaskDueDate(date, format) {
 }
 
 //получение разницы времени
-function getDifferenceInTime(start, end) {
-  const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
+ function getDifferenceInTime(start, dateTo) {
+  const difference = dayjs(dateTo).diff(start) / SECONDS_IN_MINUTES;
 
-  switch (difference) {
-    case difference < SECONDS_IN_MINUTES:
-      return dayjs(difference).format(DATE_FORMAT.MINUTES_WITH_POSTFIX);
-
-    case difference > SECONDS_IN_MINUTES && difference < SECONDS_IN_MINUTES * HOURS_IN_DAY:
-      return dayjs(difference).format(DATE_FORMAT.HOUR_MINUTES_WITH_POSTFIX);
-
-    default:
-      return dayjs(difference).format(DATE_FORMAT.DAY_HOUR_MINUTES_WITH_POSTFIX);
+  if (difference < SECONDS_IN_MINUTES) {
+    return dayjs(difference).format(DATE_FORMAT.MINUTES_WITH_POSTFIX);
+  } else if (difference > SECONDS_IN_MINUTES && difference < SECONDS_IN_MINUTES * HOURS_IN_DAY) {
+    return dayjs(difference).format(DATE_FORMAT.HOUR_MINUTES_WITH_POSTFIX);
+  } else {
+    return dayjs(difference).format(DATE_FORMAT.DAY_HOUR_MINUTES_WITH_POSTFIX);
   }
 }
 
