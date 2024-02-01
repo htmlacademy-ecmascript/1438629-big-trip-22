@@ -1,5 +1,5 @@
 export default class OffersModel {
-  #service = nul;
+  #service = null;
   #offers = [];
 
   constructor(service) {

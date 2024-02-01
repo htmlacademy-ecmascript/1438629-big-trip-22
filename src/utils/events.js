@@ -1,48 +1,43 @@
 import dayjs from 'dayjs';
-import {getRandomNumber} from '../utils/common.js';
-import minMax from 'dayjs/plugin/minMax.js';
+import minMax from 'dayjs/plugin/minMax';
+import duration from 'dayjs/plugin/duration';
 import {
   DATE_FORMAT,
-  HOURS_IN_DAY,
-  SECONDS_IN_MINUTES,
-  DURATIONS,
 } from '../constants.js';
 
 dayjs.extend(minMax);
+dayjs.extend(duration);
 
-let randomDate = dayjs().subtract(getRandomNumber(0, DURATIONS.DAY), 'day').toDate();
+export function humanizeEventDate (eventDate) {
+  return eventDate ? dayjs(eventDate).format(DATE_FORMAT.MONTH_DAY) : '';
+}
 
-const getDate = ({next}) => {
-  const daysInterval = getRandomNumber(1, DURATIONS.DAY);
-  const hoursInterval = getRandomNumber(5, DURATIONS.HOUR);
-  const minsInterval = getRandomNumber(14, DURATIONS.MINUTE);
-  if (next) {
-    randomDate = dayjs(randomDate)
-      .add(minsInterval, 'minute')
-      .add(hoursInterval, 'hour')
-      .add(daysInterval, 'day')
-      .toDate();
+export function humanizeEventTime (eventDateTime) {
+  return eventDateTime ? dayjs(eventDateTime).format(DATE_FORMAT.HOUR_MINUTE) : '';
+}
+
+export function humanizeEventDateTime (eventDateTime) {
+  return eventDateTime ? dayjs(eventDateTime).format(DATE_FORMAT.DATE_TIME_FORMAT) : '';
+}
+
+export function isDatesEqual (dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+const calcDuration = (dateFrom, dateTo) => {
+  const diff = dayjs(dateTo).diff(dayjs(dateFrom));
+  const eventDuration = dayjs.duration(diff);
+
+  if (eventDuration.days()) {
+    return eventDuration.format('DD[D] HH[H] mm[m]');
   }
-  return randomDate;
+
+  if (eventDuration.hours()) {
+    return eventDuration.format('HH[H] mm[m]');
+  }
+
+  return eventDuration.format('mm[m]');
 };
-
-
-function humanizeTaskDueDate(date, format) {
-  return date ? dayjs(date).format(format) : '';
-}
-
-//получение разницы времени
-function getDifferenceInTime(start, dateTo) {
-  const difference = dayjs(dateTo).diff(start) / SECONDS_IN_MINUTES;
-
-  if (difference < SECONDS_IN_MINUTES) {
-    return dayjs(difference).format(DATE_FORMAT.MINUTES_WITH_POSTFIX);
-  } else if (difference > SECONDS_IN_MINUTES && difference < SECONDS_IN_MINUTES * HOURS_IN_DAY) {
-    return dayjs(difference).format(DATE_FORMAT.HOUR_MINUTES_WITH_POSTFIX);
-  } else {
-    return dayjs(difference).format(DATE_FORMAT.DAY_HOUR_MINUTES_WITH_POSTFIX);
-  }
-}
 
 function toUpperCaseFirstSign(item) {
   return item.charAt(0).toUpperCase() + item.substring(1);
@@ -51,9 +46,7 @@ function toUpperCaseFirstSign(item) {
 const checkPriceIsNumber = (price) => /^\d+$/.test(price);
 
 export {
-  humanizeTaskDueDate,
-  getDifferenceInTime,
-  getDate,
   toUpperCaseFirstSign,
   checkPriceIsNumber,
+  calcDuration,
 };

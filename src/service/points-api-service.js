@@ -1,7 +1,7 @@
-import ApiService from "../framework/api-service";
-import {METHOD, SOURCE_URL} from "../constants";
+import ApiService from '../framework/api-service.js';
+import {METHOD, SOURCE_URL} from '../constants.js';
 
-export default class PointApiService extends ApiService {
+export default class PointsApiService extends ApiService {
   get points() {
     return this._load({url: SOURCE_URL.POINTS}).then(ApiService.parseResponse);
   }
@@ -19,7 +19,7 @@ export default class PointApiService extends ApiService {
       url: `${SOURCE_URL.POINTS}/${point.id}`,
       method: METHOD.PUT,
       body: JSON.stringify(point),
-      headers: new Headers({'content-type': 'application/json'}),
+      headers: new Headers({'Content-Type': 'application/json'}),
     });
     const parsedResponse = await ApiService.parseResponse(response);
     return parsedResponse;

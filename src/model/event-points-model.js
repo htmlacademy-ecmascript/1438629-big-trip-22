@@ -5,20 +5,20 @@ import {UPDATE_TYPE} from "../constants";
 export default class EventPointsModel extends Observable {
   #service = null;
   #eventPoints = [];
-  #destinationsModel = null;
+  #destinationModel = null;
   #offersModel = null;
 
-  constructor({service, destinationsModel, offersModel}) {
+  constructor(service, destinationModel, offersModel) {
     super();
     this.#service = service;
-    this.#destinationsModel = destinationsModel;
+    this.#destinationModel = destinationModel;
     this.#offersModel = offersModel;
   }
 
   async init() {
     try {
       await Promise.all(
-        [this.#destinationsModel.init()],
+        [this.#destinationModel.init()],
         this.#offersModel.init()
       );
       const points = await this.#service.points;
@@ -66,8 +66,8 @@ export default class EventPointsModel extends Observable {
   async delete(updateType, point) {
     try {
       await this.#service.deletePoint(point);
-      this.#eventPoints = this.#eventPoints.filter(item => item.id !== point.id);
-      this._notify(updateType);
+      this.#eventPoints = this.#eventPoints.filter((item) => item.id !== point.id);
+      this._notify(updateType, point);
     } catch (error) {
       throw new Error('Delete point failure');
     }

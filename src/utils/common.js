@@ -1,31 +1,10 @@
-//генерация рандомного эл-та массива
-import {getDifferenceInTime} from './events.js';
-
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
-//генерация рандомного натурального числа числа
-function getRandomNumber(number) {
-  const randomNumber = Math.floor(Math.random() * number) + 1;
-  return Number(randomNumber);
-}
-
-//счетчик
-function incrementCounter(startFrom) {
-  let counterStart = startFrom;
-  return function () {
-    return counterStart++;
-  };
-}
-
-const getRandomIntFromDuration = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+import {calcDuration, isDatesEqual} from "./events";
 
 const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
 
-const isMinorChange = (pointA, pointB) => pointA.dateFrom !== pointB.dateFrom
+const isMinorChange = (pointA, pointB) =>isDatesEqual(pointA, pointB)
   || pointA.basePrice !== pointB.basePrice
-  || getDifferenceInTime(pointA.dateFrom, pointA.dateTo) !== getDifferenceInTime(pointB.dateFrom, pointB.dateTo);
+  || calcDuration(pointA.dateFrom, pointA.dateTo) !== calcDuration(pointB.dateFrom, pointB.dateTo);
 
 const adaptToClient = (point) => {
   const adaptedPoint = {
@@ -41,15 +20,15 @@ const adaptToClient = (point) => {
   delete adaptedPoint['base_price'];
   delete adaptedPoint['is_favorite'];
 
-    return adaptedPoint;
-}
+  return adaptedPoint;
+};
 
 const adaptToServer = (point) => {
   const adaptedPoint = {
     ...point,
     ['date_from']: new Date(point.dateFrom).toISOString(),
     ['date_to']: new Date(point.dateTo).toISOString(),
-    ['base_price']: point.basePrice,
+    ['base_price']: parseInt(point.basePrice, 10),
     ['is_favorite']: point.isFavorite,
   };
 
@@ -59,13 +38,9 @@ const adaptToServer = (point) => {
   delete adaptedPoint.isFavorite;
 
   return adaptedPoint;
-}
+};
 
 export {
-  getRandomArrayElement,
-  incrementCounter,
-  getRandomNumber,
-  getRandomIntFromDuration,
   updateItem,
   isMinorChange,
   adaptToClient,
