@@ -1,5 +1,5 @@
 import {DATE_FORMAT, EDIT_TYPE, EVENTS_TYPES, POINT_EMPTY} from '../constants.js';
-import {humanizeTaskDueDate, toUpperCaseFirstSign} from '../utils/events.js';
+import {humanizeTaskDueDate, toUpperCaseFirstSign, checkPriceIsNumber} from '../utils/events.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -163,14 +163,14 @@ export default class EditItemView extends AbstractStatefulView {
   #editorMode = null;
 
   constructor({
-    destinations,
-    eventPoint = POINT_EMPTY,
-    offers,
-    onCloseClick,
-    onSaveEdit,
-    onDeleteClick,
-    editorMode = EDIT_TYPE.EDITING
-  }) {
+                destinations,
+                eventPoint = POINT_EMPTY,
+                offers,
+                onCloseClick,
+                onSaveEdit,
+                onDeleteClick,
+                editorMode = EDIT_TYPE.EDITING
+              }) {
     super();
     this.#destinations = destinations;
     this.#offers = offers;
@@ -244,6 +244,11 @@ export default class EditItemView extends AbstractStatefulView {
   };
 
   #priceChangeHandler = (evt) => {
+    evt.target.setCustomValidity('');
+    if (!checkPriceIsNumber(evt.target.value)) {
+      evt.target.setCustomValidity('Цена должна быть цифрой');
+      return;
+    }
     this._setState({
       ...this._state,
       basePrice: evt.target.value,

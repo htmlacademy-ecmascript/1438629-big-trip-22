@@ -48,9 +48,12 @@ function toUpperCaseFirstSign(item) {
   return item.charAt(0).toUpperCase() + item.substring(1);
 }
 
+const checkPriceIsNumber = (price) => /^\d+$/.test(price);
+
 export {
   humanizeTaskDueDate,
   getDifferenceInTime,
   getDate,
   toUpperCaseFirstSign,
+  checkPriceIsNumber,
 };

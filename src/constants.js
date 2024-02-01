@@ -67,6 +67,7 @@ const UPDATE_TYPE = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 const MODE = {
@@ -112,6 +113,19 @@ const EMPTY_LIST_MESSAGE = {
   PAST: 'There are no past events now'
 };
 
+const METHOD = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
+};
+
+const SOURCE_URL = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations',
+}
+
 export {
   START_ID_COUNTER,
   DESCRIPTIONS,
@@ -135,5 +149,7 @@ export {
   UPDATE_TYPE,
   EMPTY_LIST_MESSAGE,
   EDIT_TYPE,
-  POINT_EMPTY
+  POINT_EMPTY,
+  METHOD,
+  SOURCE_URL
 };
