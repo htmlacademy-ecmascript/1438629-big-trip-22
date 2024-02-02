@@ -56,7 +56,7 @@ export default class AddPointPresenter {
       this.#addPointComponent.updateElement({
         isDisabled: false,
         isSaving: false,
-        //isDeleting: false,
+        isDeleting: false,
       });
     };
     this.#addPointComponent.shake(resetFormState);
@@ -79,7 +79,7 @@ export default class AddPointPresenter {
       UPDATE_TYPE.MINOR,
       point
     );
-    this.destroy({isCanceled: false});
+    // this.destroy({isCanceled: false});
   };
 
 }

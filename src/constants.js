@@ -14,11 +14,6 @@ const DATE_FORMAT = {
   HOUR_MINUTE: 'HH:mm',
   DATE_TIME_FORMAT: 'DD/MM/YY HH:mm'
 };
-const DURATIONS = {
-  HOUR: 5,
-  DAY: 3,
-  MINUTE: 59
-};
 
 const FILTERS_TYPE = {
   EVERYTHING: 'everything',
@@ -56,7 +51,7 @@ const POINT_EMPTY = {
   dateTo: null,
   destination: null,
   isFavorite: false,
-  offer: null,
+  offers: [],
   type: EVENTS_TYPES[0],
 };
 
@@ -103,7 +98,6 @@ export {
   EVENTS_TYPES,
   DATE_FORMAT,
   FILTERS_TYPE,
-  DURATIONS,
   MODE,
   SORT_TYPES,
   ENABLED_SORT_TYPES,
