@@ -136,6 +136,7 @@ export default class PointPresenter {
   setAborting = () => {
     if (this.#mode === MODE.DEFAULT) {
       this.#editPointComponent.shake();
+      return;
     }
 
     if (this.#mode === MODE.EDITING) {
