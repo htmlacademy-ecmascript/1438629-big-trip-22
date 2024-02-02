@@ -7,8 +7,8 @@ import SortPresenter from './sort-presenter.js';
 import {sorting} from '../utils/sort.js';
 import {filter} from '../utils/filter.js';
 import AddPointPresenter from './add-point-presenter.js';
-import LoaderView from "../view/loading-view";
-import UiBlocker from "../framework/ui-blocker/ui-blocker";
+import LoaderView from '../view/loading-view.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
 export default class PointsPresenter {
   #tripContainer = null;
@@ -26,7 +26,7 @@ export default class PointsPresenter {
   #addPointButtonPresenter = null;
   #currentSortType = SORT_TYPES.DAY;
   #isCreating = false;
-  #uiBlocker = new UiBlocker({lowerLimit: TIME_LIMIT.LOWER_LIMIT, upperLimit: TIME_LIMIT.UPPER_LIMIT})
+  #uiBlocker = new UiBlocker({lowerLimit: TIME_LIMIT.LOWER_LIMIT, upperLimit: TIME_LIMIT.UPPER_LIMIT});
 
   constructor({tripContainer, destinationModel, eventPointsModel, offersModel, filtersModel, addPointButtonPresenter}) {
     this.#tripContainer = tripContainer;
@@ -103,7 +103,7 @@ export default class PointsPresenter {
       this.#clearBoard({resetSortType: true});
       this.#renderBoard();
     }
-    if(updateType === UPDATE_TYPE.INIT) {
+    if (updateType === UPDATE_TYPE.INIT) {
       this.#isLoading = false;
       remove(this.#loadingComponent);
       this.#renderBoard();
@@ -111,6 +111,7 @@ export default class PointsPresenter {
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
+
     this.#uiBlocker.block();
     if (actionType === USER_ACTION.UPDATE_POINT) {
       this.#pointsPresenter.get(update.id).setSaving();
@@ -131,7 +132,7 @@ export default class PointsPresenter {
       }
     }
     if (actionType === USER_ACTION.DELETE_POINT) {
-      tthis.#pointsPresenter.get(update.id).setRemove();
+      this.#pointsPresenter.get(update.id).setRemove();
       try {
         await this.#eventPointsModel.delete(updateType, update);
       } catch (error) {

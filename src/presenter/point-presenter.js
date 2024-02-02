@@ -123,6 +123,7 @@ export default class PointPresenter {
       isFavorite: !this.#point.isFavorite
     });
   };
+
   setSaving = () => {
     if (this.#mode === MODE.EDITING) {
       this.#editPointComponent.updateElement({

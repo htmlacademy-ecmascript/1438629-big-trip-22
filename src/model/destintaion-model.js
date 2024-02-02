@@ -8,7 +8,7 @@ export default class DestinationModel {
 
   async init() {
     this.#destinations = await this.#service.destinations;
-    return this.#destinations
+    return this.#destinations;
   }
 
   get() {

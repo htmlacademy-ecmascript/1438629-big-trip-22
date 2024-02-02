@@ -1,6 +1,6 @@
 import Observable from '../framework/observable.js';
 import {adaptToClient, adaptToServer, updateItem} from '../utils/common.js';
-import {UPDATE_TYPE} from "../constants";
+import {UPDATE_TYPE} from '../constants.js';
 
 export default class EventPointsModel extends Observable {
   #service = null;

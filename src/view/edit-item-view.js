@@ -1,9 +1,8 @@
-import {DATE_FORMAT, EDIT_TYPE, EVENTS_TYPES, POINT_EMPTY} from '../constants.js';
+import {EDIT_TYPE, EVENTS_TYPES, POINT_EMPTY} from '../constants.js';
 import {toUpperCaseFirstSign, checkPriceIsNumber, humanizeEventDate} from '../utils/events.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-import he from "he";
 
 function rollUpTemplate() {
   return `<button class="event__rollup-btn" type="button">

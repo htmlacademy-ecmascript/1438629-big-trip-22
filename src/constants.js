@@ -89,11 +89,13 @@ const SOURCE_URL = {
   POINTS: 'points',
   OFFERS: 'offers',
   DESTINATIONS: 'destinations',
-}
+};
+
 const TIME_LIMIT = {
   LOWER_LIMIT: 300,
   UPPER_LIMIT: 1000,
 };
+
 export {
   EVENTS_TYPES,
   DATE_FORMAT,
