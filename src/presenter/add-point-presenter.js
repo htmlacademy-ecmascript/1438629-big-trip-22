@@ -1,6 +1,7 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {EDIT_TYPE, UPDATE_TYPE, USER_ACTION} from '../constants.js';
 import EditItemView from '../view/edit-item-view.js';
+
 export default class AddPointPresenter {
   #container = null;
   #destinationModel = [];
@@ -21,7 +22,7 @@ export default class AddPointPresenter {
     if (this.#addPointComponent !== null) {
       return;
     }
-    this.#addPointComponent = new EditItemView({
+    this.#addPointComponent = new EditItemView ({
       destinations: this.#destinationModel.get(),
       offers: this.#offersModel.get(),
       onCloseClick: this.#cancelClickHandler,
@@ -33,7 +34,7 @@ export default class AddPointPresenter {
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  destroy({isCanceled = true}) {
+  destroy({isCanceled = true} = {}) {
     if (!this.#addPointComponent) {
       return;
     }
@@ -42,6 +43,24 @@ export default class AddPointPresenter {
     this.#handleDestroy({isCanceled});
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
+
+  setSaving = () => {
+    this.#addPointComponent.updateElement({
+      isDisabled: true,
+      isSaving: true
+    });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#addPointComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#addPointComponent.shake(resetFormState);
+  };
 
   #cancelClickHandler = () => {
     this.destroy({isCanceled: true});
@@ -60,6 +79,7 @@ export default class AddPointPresenter {
       UPDATE_TYPE.MINOR,
       point
     );
-    this.destroy({isCanceled: false});
+    // this.destroy({isCanceled: false});
   };
+
 }

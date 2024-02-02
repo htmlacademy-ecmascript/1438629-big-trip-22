@@ -123,4 +123,38 @@ export default class PointPresenter {
       isFavorite: !this.#point.isFavorite
     });
   };
+
+  setSaving = () => {
+    if (this.#mode === MODE.EDITING) {
+      this.#editPointComponent.updateElement({
+        isDisabled: true,
+        isSaving: true
+      });
+    }
+  };
+
+  setAborting = () => {
+    if (this.#mode === MODE.DEFAULT) {
+      this.#editPointComponent.shake();
+    }
+
+    if (this.#mode === MODE.EDITING) {
+      const resetFormState = () => {
+        this.#editPointComponent.updateElement({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      };
+
+      this.#editPointComponent.shake(resetFormState);
+    }
+  };
+
+  setRemove = () => {
+    this.#editPointComponent.updateElement({
+      isDisabled: true,
+      isDeleting: true,
+    });
+  };
 }

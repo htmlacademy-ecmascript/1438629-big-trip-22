@@ -1,36 +1,36 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {DATE_FORMAT} from '../constants.js';
-import {humanizeTaskDueDate, getDifferenceInTime} from '../utils/events.js';
+import he from 'he';
+import {humanizeEventDate, humanizeEventTime, toUpperCaseFirstSign, calcDuration} from '../utils/events.js';
 
 function createOfferTemplate(offers) {
   return offers.map(({title, price}) => (
     `<li class="event__offer">
-        <span class="event__offer-title">${title}</span>
+        <span class="event__offer-title">${he.encode(String(title))}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${price}</span>
+        <span class="event__offer-price">${he.encode(String(price))}</span>
     </li>`
   )).join('');
 }
 
 function createTripItemTemplate(destination, eventPoint, offers) {
   const {type, basePrice, dateFrom, dateTo, isFavorite,} = eventPoint;
-  const eventOffers = offers.filter((offer) => eventPoint.offers.includes(offer.id));
+  const eventOffers = offers.filter((offer) => eventPoint.offers?.includes(offer.id));
 
   return (
     `<li class="trip-events__item">
         <div class="event">
-          <time class="event__date" datetime="${dateFrom}">${humanizeTaskDueDate(dateFrom, DATE_FORMAT.MONTH_DAY)}</time>
+          <time class="event__date" datetime="${dateFrom}">${humanizeEventDate(dateFrom)}</time>
           <div class="event__type">
-            <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
+            <img class="event__type-icon" width="42" height="42" src="img/icons/${he.encode(String(type))}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">${type} ${destination.name}</h3>
+          <h3 class="event__title">${toUpperCaseFirstSign(type)} ${he.encode(String(destination.name)) ?? ''}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime="${dateFrom}">${humanizeTaskDueDate(dateFrom, DATE_FORMAT.HOUR_MINUTES)}</time>
+              <time class="event__start-time" datetime="${dateFrom}">${humanizeEventTime(dateFrom)}</time>
               &mdash;
-              <time class="event__end-time" datetime="${dateTo}">${humanizeTaskDueDate(dateTo, DATE_FORMAT.HOUR_MINUTES)}</time>
+              <time class="event__end-time" datetime="${dateTo}">${humanizeEventTime(dateTo)}</time>
             </p>
-            <p class="event__duration">${getDifferenceInTime(dateFrom, dateTo)}</p>
+            <p class="event__duration">${calcDuration(dateFrom, dateTo)}</p>
           </div>
           <p class="event__price">
             &euro;&nbsp;<span class="event__price-value">${basePrice}</span>

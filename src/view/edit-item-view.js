@@ -1,5 +1,5 @@
-import {DATE_FORMAT, EDIT_TYPE, EVENTS_TYPES, POINT_EMPTY} from '../constants.js';
-import {humanizeTaskDueDate, toUpperCaseFirstSign} from '../utils/events.js';
+import {EDIT_TYPE, EVENTS_TYPES, POINT_EMPTY} from '../constants.js';
+import {toUpperCaseFirstSign, checkPriceIsNumber, humanizeEventDate} from '../utils/events.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -13,7 +13,7 @@ function rollUpTemplate() {
 function createDestinationOptionTemplate(destinations) {
   return destinations.map((destination) => (
     `
-      <option value="${destination.name}"></option>
+      <option value="${destination}"></option>
     `
   )).join('');
 }
@@ -99,6 +99,7 @@ function createEditItemTemplate({state, eventPointDestinations, eventPointOffers
   const selectedDestination = eventPointDestinations.find((item) => item.id === destination);
   const currentEventPointOffers = eventPointOffers.find((offer) => offer.type === type);
   const selectedDestinationName = selectedDestination ? selectedDestination.name : '';
+  const listCities = eventPointDestinations.map(({name}) => name);
   return (
     `<li class="trip-events__item">
         <form class="event event--edit" action="#" method="post">
@@ -122,15 +123,15 @@ function createEditItemTemplate({state, eventPointDestinations, eventPointOffers
               </label>
               <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${selectedDestinationName}" list="destination-list-${id}">
               <datalist id="destination-list-${id}">
-                ${createDestinationOptionTemplate(eventPointDestinations)}
+                ${createDestinationOptionTemplate(listCities)}
               </datalist>
             </div>
             <div class="event__field-group  event__field-group--time">
               <label class="visually-hidden" for="event-start-time-${id}">From</label>
-              <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${isCreating ? '' : humanizeTaskDueDate(dateFrom, DATE_FORMAT.DAY_MONTH_YEAR)}">
+              <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${isCreating ? '' : humanizeEventDate(dateFrom)}">
               &mdash;
               <label class="visually-hidden" for="event-end-time-${id}">To</label>
-              <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${isCreating ? '' : humanizeTaskDueDate(dateTo, DATE_FORMAT.DAY_MONTH_YEAR)}">
+              <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${isCreating ? '' : humanizeEventDate(dateTo)}">
             </div>
             <div class="event__field-group  event__field-group--price">
               <label class="event__label" for="event-price-${id}">
@@ -162,15 +163,7 @@ export default class EditItemView extends AbstractStatefulView {
   #datePickerTo = null;
   #editorMode = null;
 
-  constructor({
-    destinations,
-    eventPoint = POINT_EMPTY,
-    offers,
-    onCloseClick,
-    onSaveEdit,
-    onDeleteClick,
-    editorMode = EDIT_TYPE.EDITING
-  }) {
+  constructor({destinations, eventPoint = POINT_EMPTY, offers, onCloseClick, onSaveEdit, onDeleteClick, editorMode = EDIT_TYPE.EDITING}) {
     super();
     this.#destinations = destinations;
     this.#offers = offers;
@@ -244,6 +237,11 @@ export default class EditItemView extends AbstractStatefulView {
   };
 
   #priceChangeHandler = (evt) => {
+    evt.target.setCustomValidity('');
+    if (!checkPriceIsNumber(evt.target.value)) {
+      evt.target.setCustomValidity('Цена должна быть цифрой');
+      return;
+    }
     this._setState({
       ...this._state,
       basePrice: evt.target.value,
