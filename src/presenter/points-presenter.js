@@ -165,6 +165,7 @@ export default class PointsPresenter {
 
   #handleModeChange = () => {
     this.#pointsPresenter.forEach((presenter) => presenter.resetView());
+    this.#addPointPresenter.destroy();
   };
 
   #renderPoints() {

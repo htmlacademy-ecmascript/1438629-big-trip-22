@@ -153,9 +153,11 @@ export default class PointPresenter {
   };
 
   setRemove = () => {
-    this.#editPointComponent.updateElement({
-      isDisabled: true,
-      isDeleting: true,
-    });
+    if (this.#mode === MODE.EDITING) {
+      this.#editPointComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
   };
 }
