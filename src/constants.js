@@ -33,6 +33,7 @@ const UPDATE_TYPE = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+  ERROR: 'ERROR',
 };
 
 const MODE = {
@@ -52,7 +53,7 @@ const POINT_EMPTY = {
   destination: null,
   isFavorite: false,
   offers: [],
-  type: EVENTS_TYPES[0],
+  type: EVENTS_TYPES[5],
 };
 
 const SORT_TYPES = {
@@ -75,7 +76,8 @@ const EMPTY_LIST_MESSAGE = {
   EVERYTHING: 'Click New Event to create your first point',
   FUTURE: 'There are no future events now',
   PRESENT: 'There are no present events now',
-  PAST: 'There are no past events now'
+  PAST: 'There are no past events now',
+  ERROR: 'Failed to load latest route information'
 };
 
 const METHOD = {

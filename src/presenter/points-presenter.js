@@ -1,5 +1,4 @@
 import {render, remove} from '../framework/render.js';
-import EmptyEventPointBoard from '../view/empty-event-points-list-view.js';
 import TripListView from '../view/trip-list-view.js';
 import PointPresenter from './point-presenter.js';
 import {FILTERS_TYPE, SORT_TYPES, TIME_LIMIT, UPDATE_TYPE, USER_ACTION} from '../constants.js';
@@ -9,7 +8,7 @@ import {filter} from '../utils/filter.js';
 import AddPointPresenter from './add-point-presenter.js';
 import LoaderView from '../view/loading-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
-
+import EmptyEventPointsListView from '../view/empty-event-points-list-view.js';
 export default class PointsPresenter {
   #tripContainer = null;
   #destinationModel = null;
@@ -34,14 +33,14 @@ export default class PointsPresenter {
     this.#eventPointsModel = eventPointsModel;
     this.#offersModel = offersModel;
     this.#filtersModel = filtersModel;
-    this.#eventPointsModel.addObserver(this.#modelEventHandler);
-    this.#filtersModel.addObserver(this.#modelEventHandler);
+    this.#eventPointsModel.addObserver(this.#modelEventChangeHandler);
+    this.#filtersModel.addObserver(this.#modelEventChangeHandler);
     this.#addPointButtonPresenter = addPointButtonPresenter;
     this.#addPointPresenter = new AddPointPresenter({
       container: this.#tripListComponent.element,
       destinationModel: this.#destinationModel,
       offersModel: this.#offersModel,
-      onDataChange: this.#handleViewAction,
+      onDataChange: this.#viewActionChangeHandler,
       onDestroy: this.#addPointDestroyHandler,
     });
   }
@@ -65,12 +64,14 @@ export default class PointsPresenter {
 
     if (this.points.length === 0 && !this.#isCreating) {
       this.#renderEmptyList();
+      this.#addPointButtonPresenter.enabledButton();
       return;
     }
 
     if (!this.#isCreating) {
       this.#addPointButtonPresenter.enabledButton();
     }
+
     this.#renderSort();
     this.#renderTripList();
     this.#renderPoints();
@@ -82,7 +83,9 @@ export default class PointsPresenter {
 
   #clearBoard = ({resetSortType = false} = {}) => {
     this.#clearPoints();
-    this.#sortPresenter.destroy();
+    if (this.#sortPresenter) {
+      this.#sortPresenter.destroy();
+    }
     remove(this.#emptyListComponent);
     if (resetSortType) {
       this.#currentSortType = SORT_TYPES.DAY;
@@ -95,7 +98,7 @@ export default class PointsPresenter {
     this.#addPointPresenter.destroy();
   };
 
-  #modelEventHandler = (updateType, data) => {
+  #modelEventChangeHandler = (updateType, data) => {
     if (updateType === UPDATE_TYPE.PATCH) {
       this.#pointsPresenter.get(data?.id)?.init(data);
     }
@@ -112,9 +115,14 @@ export default class PointsPresenter {
       remove(this.#loadingComponent);
       this.#renderBoard();
     }
+    if (updateType === UPDATE_TYPE.ERROR) {
+      this.#isLoading = false;
+      remove(this.#loadingComponent);
+      this.#renderErrorMessage();
+    }
   };
 
-  #handleViewAction = async (actionType, updateType, update) => {
+  #viewActionChangeHandler = async (actionType, updateType, update) => {
 
     this.#uiBlocker.block();
     if (actionType === USER_ACTION.UPDATE_POINT) {
@@ -176,8 +184,16 @@ export default class PointsPresenter {
     });
   }
 
+  #renderErrorMessage() {
+    this.#emptyListComponent = new EmptyEventPointsListView({
+      filterType: this.#filtersModel.get(),
+      isServerError: true,
+    });
+    render(this.#emptyListComponent, this.#tripContainer);
+  }
+
   #renderEmptyList() {
-    this.#emptyListComponent = new EmptyEventPointBoard({
+    this.#emptyListComponent = new EmptyEventPointsListView({
       filterType: this.#filtersModel.get(),
     });
 
@@ -206,7 +222,7 @@ export default class PointsPresenter {
       pointListContainer: this.#tripListComponent.element,
       destinationModel: this.#destinationModel,
       offersModel: this.#offersModel,
-      onPointChange: this.#handleViewAction,
+      onPointChange: this.#viewActionChangeHandler,
       onModeChange: this.#handleModeChange
     });
 

@@ -27,7 +27,7 @@ export default class EventPointsModel extends Observable {
 
     } catch (error) {
       this.#eventPoints = [];
-      this._notify(UPDATE_TYPE.INIT, {isError: true});
+      this._notify(UPDATE_TYPE.ERROR, {isError: true});
     }
   }
 

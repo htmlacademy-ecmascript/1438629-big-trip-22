@@ -1,19 +1,15 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {getTripFullCost, getTripPeriod, getTripRoute} from '../utils/common.js';
 
-function createHeaderTripInfoTemplate({route, duration, cost, isEmpty}) {
-  return (
-    isEmpty ?
-      `<section class="trip-main__trip-info  trip-info">
+const createHeaderTripInfoTemplate = ({route, duration, cost, isEmpty}) =>
+  isEmpty
+    ? `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">Loading...</h1>
         <p class="trip-info__dates">Loading...</p>
       </div>
-      <p class="trip-info__cost">
-        Total: &euro;&nbsp;<span class="trip-info__cost-value">0</span>
-      </p>
-    </section>` :
-      `<section class="trip-main__trip-info  trip-info">
+    </section>`
+    : `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">${route}</h1>
         <p class="trip-info__dates">${duration}</p>
@@ -21,9 +17,7 @@ function createHeaderTripInfoTemplate({route, duration, cost, isEmpty}) {
       <p class="trip-info__cost">
         Total: &euro;&nbsp;<span class="trip-info__cost-value">${cost}</span>
       </p>
-    </section>`
-  );
-}
+    </section>`;
 
 export default class HeaderTripInfoView extends AbstractView {
   #eventPoints = [];

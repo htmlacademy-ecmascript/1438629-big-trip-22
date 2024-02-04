@@ -9,8 +9,9 @@ export default class SortPresenter {
   #sortComponent = null;
   #sortTypesChangeHandler = null;
 
-  constructor({container, sortTypeHandler}) {
+  constructor({container, sortTypeHandler, currentSortType}) {
     this.#container = container;
+    this.#currentSortType = currentSortType || SORT_TYPES.DAY
     this.#sortTypes = Object.values(SORT_TYPES).map((type) => ({
       type,
       isChecked: type === this.#currentSortType,

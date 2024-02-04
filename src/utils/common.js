@@ -44,8 +44,7 @@ const adaptToServer = (point) => {
 };
 
 const getTripRoute = (points = [], destinations = []) => {
-  const destinationsNames = sorting[SORT_TYPES.DAY]([...points]).map(
-    (point) =>
+  const destinationsNames = sorting[SORT_TYPES.DAY]([...points]).map((point) =>
       destinations.find((destination) => destination.id === point.destination).name
   );
   return destinationsNames.length <= DESTINATION_ITEMS_COUNT
@@ -77,6 +76,10 @@ const getTripFullCost = (points = [], offers = []) => (
   )
 );
 
+function toUpperCaseFirstSign(item) {
+  return item.charAt(0).toUpperCase() + item.substring(1);
+}
+
 export {
   updateItem,
   isMinorChange,
@@ -85,4 +88,5 @@ export {
   getTripRoute,
   getTripPeriod,
   getTripFullCost,
+  toUpperCaseFirstSign,
 };

@@ -16,10 +16,9 @@ export default class FilterPresenter {
     this.#filtersModel = filtersModel;
     this.#eventPointsModel.addObserver(this.#handleModeChange);
     this.#filtersModel.addObserver(this.#handleModeChange);
-    this.#filters = Object.entries(filter).map(([filterType, filterPoints], index) =>
-      ({
+    this.#filters = Object.entries(filter).map(
+      ([filterType, filterPoints]) => ({
         type: filterType,
-        isChecked: index === 0,
         isDisabled: !filterPoints(this.#eventPointsModel.get()).length,
       })
     );
@@ -27,11 +26,19 @@ export default class FilterPresenter {
 
   init() {
     const prevFilterComponent = this.#filterComponent;
-    const items = this.#filters.map((filterItem) => ({
-      ...filterItem,
-      isChecked: this.#filtersModel.get() === filterItem.type,
-      isDisabled: false,
-    }));
+    const items = this.#filters.map((filterItem) => {
+      const isChecked = this.#filtersModel.get() === filterItem.type;
+
+      const getFilteredPoints = filter[filterItem.type];
+      const filteredPoints = getFilteredPoints(this.#eventPointsModel.get());
+      const isDisabled = !filteredPoints.length;
+
+      return {
+        ...filterItem,
+        isChecked,
+        isDisabled,
+      };
+    });
 
     this.#filterComponent = new ListFilterView({
       items,
