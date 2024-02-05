@@ -1,9 +1,10 @@
-import {EDIT_TYPE, EVENTS_TYPES, POINT_EMPTY} from '../constants.js';
-import {checkPriceIsNumber, humanizeEventDate} from '../utils/events.js';
+import {EditType, EventTypes, POINT_EMPTY} from '../constants.js';
+import {humanizeEventDate} from '../utils/events.js';
 import {toUpperCaseFirstSign} from '../utils/common.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import he from 'he';
 
 function createButtonTemplate(isCreating, isDisabled, isDeleting) {
   if (isCreating) {
@@ -24,7 +25,7 @@ function createButtonTemplate(isCreating, isDisabled, isDeleting) {
 function createDestinationOptionTemplate(destinations) {
   return destinations.map((destination) => (
     `
-      <option value="${destination}"></option>
+      <option value="${he.encode(destination)}"></option>
     `
   )).join('');
 }
@@ -43,9 +44,9 @@ function createOfferTemplate(offer, isChecked) {
   const checked = isChecked ? 'checked' : '';
   return (
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${title}-${id}" type="checkbox" name="event-offer-${title}" data-id="${id}" ${checked}>
-        <label class="event__offer-label" for="event-offer-${title}-${id}">
-          <span class="event__offer-title">${title}</span>
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${he.encode(title)}-${id}" type="checkbox" name="event-offer-${he.encode(title)}" data-id="${id}" ${checked}>
+        <label class="event__offer-label" for="event-offer-${he.encode(title)}-${id}">
+          <span class="event__offer-title">${he.encode(title)}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${price}</span>
         </label>
@@ -54,15 +55,15 @@ function createOfferTemplate(offer, isChecked) {
 }
 
 function createOfferListTemplate(offers, checkedOffers) {
-    return (
-      `<section class="event__section  event__section--offers">
+  return (
+    `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
           ${offers.map((offer) => createOfferTemplate(offer, checkedOffers?.includes(offer.id))).join('')}
         </div>
       </section>`
-    );
+  );
 }
 
 function createPhotoTemplate(photo) {
@@ -91,7 +92,7 @@ function createDestinationTemplate(destination) {
     return (
       `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${description}</p>
+        <p class="event__destination-description">${he.encode(description)}</p>
             ${createPhotoContainerTemplate(pictures)}
       </section>`
     );
@@ -102,7 +103,7 @@ function createDestinationTemplate(destination) {
 
 function createEditItemTemplate({state, eventPointDestinations, eventPointOffers, editorMode}) {
   const {basePrice, dateFrom, dateTo, type, id, destination, isDisabled, isSaving, isDeleting} = state;
-  const isCreating = editorMode === EDIT_TYPE.CREATING;
+  const isCreating = editorMode === EditType.CREATING;
   const selectedDestination = eventPointDestinations.find((item) => item.id === destination);
   const currentEventPointOffers = eventPointOffers.find((offer) => offer.type === type);
   const selectedDestinationName = selectedDestination ? selectedDestination.name : '';
@@ -120,7 +121,7 @@ function createEditItemTemplate({state, eventPointDestinations, eventPointOffers
               <div class="event__type-list">
                 <fieldset class="event__type-group">
                   <legend class="visually-hidden">Event type</legend>
-                  ${type ? createEventTypeTemplate(EVENTS_TYPES, type) : ''}
+                  ${type ? createEventTypeTemplate(EventTypes, type) : ''}
                 </fieldset>
               </div>
             </div>
@@ -128,7 +129,7 @@ function createEditItemTemplate({state, eventPointDestinations, eventPointOffers
               <label class="event__label  event__type-output" for="event-destination-${id}">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${selectedDestinationName}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(selectedDestinationName)}" list="destination-list-1">
               <datalist id="destination-list-1">
                 ${createDestinationOptionTemplate(listCities)}
               </datalist>
@@ -177,7 +178,7 @@ export default class EditPointView extends AbstractStatefulView {
       onCloseClick,
       onSaveEdit,
       onDeleteClick,
-      editorMode = EDIT_TYPE.EDITING
+      editorMode = EditType.EDITING
     }
   ) {
     super();
@@ -224,11 +225,11 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   _restoreHandlers = () => {
-    if (this.#editorMode === EDIT_TYPE.EDITING) {
+    if (this.#editorMode === EditType.EDITING) {
       this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onCloseClick);
       this.element.querySelector('.event__reset-btn').addEventListener('click', this.#deleteClickHandler);
     }
-    if (this.#editorMode === EDIT_TYPE.CREATING) {
+    if (this.#editorMode === EditType.CREATING) {
       this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onCloseClick);
     }
     this.element.querySelector('.event.event--edit').addEventListener('submit', this.#saveEditFormHandler);

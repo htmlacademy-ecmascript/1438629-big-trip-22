@@ -1,5 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import {EDIT_TYPE, UPDATE_TYPE, USER_ACTION} from '../constants.js';
+import {EditType, UpdateType, UserAction} from '../constants.js';
 import EditPointView from '../view/edit-point-view.js';
 
 export default class AddPointPresenter {
@@ -27,7 +27,7 @@ export default class AddPointPresenter {
       offers: this.#offersModel.get(),
       onCloseClick: this.#cancelClickHandler,
       onSaveEdit: this.#formSubmitHandler,
-      editorMode: EDIT_TYPE.CREATING,
+      editorMode: EditType.CREATING,
     });
 
     render(this.#addPointComponent, this.#container, RenderPosition.AFTERBEGIN);
@@ -80,8 +80,8 @@ export default class AddPointPresenter {
 
   #formSubmitHandler = (point) => {
     this.#handleDataChange(
-      USER_ACTION.CREATE_POINT,
-      UPDATE_TYPE.MINOR,
+      UserAction.CREATE_POINT,
+      UpdateType.MINOR,
       point
     );
     document.removeEventListener('keydown', this.#escKeyDownHandler);

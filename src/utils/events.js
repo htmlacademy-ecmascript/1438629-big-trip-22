@@ -2,18 +2,18 @@ import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import duration from 'dayjs/plugin/duration';
 import {
-  DATE_FORMAT,
+  DateFormat,
 } from '../constants.js';
 
 dayjs.extend(minMax);
 dayjs.extend(duration);
 
 export function humanizeEventDate (eventDate) {
-  return eventDate ? dayjs(eventDate).format(DATE_FORMAT.MONTH_DAY) : '';
+  return eventDate ? dayjs(eventDate).format(DateFormat.MONTH_DAY) : '';
 }
 
 export function humanizeEventTime (eventDateTime) {
-  return eventDateTime ? dayjs(eventDateTime).format(DATE_FORMAT.HOUR_MINUTE) : '';
+  return eventDateTime ? dayjs(eventDateTime).format(DateFormat.HOUR_MINUTE) : '';
 }
 
 export function isDatesEqual (dateA, dateB) {

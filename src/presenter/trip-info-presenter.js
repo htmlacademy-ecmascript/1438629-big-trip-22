@@ -18,20 +18,20 @@ export default class TripInfoPresenter {
   }
 
   init() {
-    const prevTripInfoComponent = this.#tripInfoComponent;
+    const preventTripInfoComponent = this.#tripInfoComponent;
     this.#tripInfoComponent = new HeaderTripInfoView({
       destinations: this.#destinationModel.get(),
       offers: this.#offersModel.get(),
       eventPoints: this.#eventPointsModel.get(),
     });
 
-    if (!prevTripInfoComponent) {
+    if (!preventTripInfoComponent) {
       render(this.#tripInfoComponent, this.#container, RenderPosition.AFTERBEGIN);
       return;
     }
 
-    replace(this.#tripInfoComponent, prevTripInfoComponent);
-    remove(prevTripInfoComponent);
+    replace(this.#tripInfoComponent, preventTripInfoComponent);
+    remove(preventTripInfoComponent);
 
     render(this.#tripInfoComponent, this.#container, RenderPosition.AFTERBEGIN);
   }

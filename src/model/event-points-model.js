@@ -1,6 +1,6 @@
 import Observable from '../framework/observable.js';
 import {adaptToClient, adaptToServer, updateItem} from '../utils/common.js';
-import {UPDATE_TYPE} from '../constants.js';
+import {UpdateType} from '../constants.js';
 
 export default class EventPointsModel extends Observable {
   #service = null;
@@ -23,11 +23,11 @@ export default class EventPointsModel extends Observable {
       );
       const points = await this.#service.points;
       this.#eventPoints = points.map(adaptToClient);
-      this._notify(UPDATE_TYPE.INIT, {isError: false});
+      this._notify(UpdateType.INIT, {isError: false});
 
     } catch (error) {
       this.#eventPoints = [];
-      this._notify(UPDATE_TYPE.ERROR, {isError: true});
+      this._notify(UpdateType.ERROR, {isError: true});
     }
   }
 
