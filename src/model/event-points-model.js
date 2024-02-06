@@ -18,8 +18,10 @@ export default class EventPointsModel extends Observable {
   async init() {
     try {
       await Promise.all(
-        [this.#destinationModel.init()],
-        this.#offersModel.init()
+        [
+          this.#destinationModel.init(),
+          this.#offersModel.init()
+        ]
       );
       const points = await this.#service.points;
       this.#eventPoints = points.map(adaptToClient);

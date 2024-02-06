@@ -100,6 +100,10 @@ const TimeLimit = {
 
 const DESTINATION_ITEMS_COUNT = 3;
 
+const AUTHORIZATION = 'Basic adasdasdd2cx343211';
+
+const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
+
 export {
   EventTypes,
   DateFormat,
@@ -115,5 +119,7 @@ export {
   Method,
   SourceUrl,
   TimeLimit,
-  DESTINATION_ITEMS_COUNT
+  DESTINATION_ITEMS_COUNT,
+  AUTHORIZATION,
+  END_POINT
 };
