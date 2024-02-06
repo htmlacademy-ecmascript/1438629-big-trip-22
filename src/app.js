@@ -51,9 +51,9 @@ const pointsPresenter = new PointsPresenter({
 
 export default class BigTripApp {
   init() {
-    addPointButtonPresenter.init({onButtonClick: pointsPresenter.addPointButtonClickHandler});
     tripInfoPresenter.init();
     filtersPresenter.init();
+    addPointButtonPresenter.init({onButtonClick: pointsPresenter.addPointButtonClickHandler});
     pointsPresenter.init();
     eventPointsModel.init();
   }

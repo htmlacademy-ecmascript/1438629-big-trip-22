@@ -1,6 +1,6 @@
 import {calcDuration, isDatesEqual} from './events.js';
 import {sorting} from './sort.js';
-import {SORT_TYPES, DESTINATION_ITEMS_COUNT} from '../constants.js';
+import {SortType, DESTINATION_ITEMS_COUNT} from '../constants.js';
 import dayjs from 'dayjs';
 
 const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
@@ -44,9 +44,8 @@ const adaptToServer = (point) => {
 };
 
 const getTripRoute = (points = [], destinations = []) => {
-  const destinationsNames = sorting[SORT_TYPES.DAY]([...points]).map(
-    (point) =>
-      destinations.find((destination) => destination.id === point.destination).name
+  const destinationsNames = sorting[SortType.DAY]([...points]).map((point) =>
+    destinations.find((destination) => destination.id === point.destination).name
   );
   return destinationsNames.length <= DESTINATION_ITEMS_COUNT
     ? destinationsNames.join(' &mdash; ')
@@ -54,7 +53,7 @@ const getTripRoute = (points = [], destinations = []) => {
 };
 
 const getTripPeriod = (points = []) => {
-  const sortedPoints = sorting[SORT_TYPES.DAY]([...points]);
+  const sortedPoints = sorting[SortType.DAY]([...points]);
 
   return sortedPoints.length
     ? `${dayjs(sortedPoints.at(0).dateFrom).format('DD MMM')} - ${dayjs(sortedPoints.at(-1).dateTo).format('DD MMM')}`
@@ -77,6 +76,10 @@ const getTripFullCost = (points = [], offers = []) => (
   )
 );
 
+function toUpperCaseFirstSign(item) {
+  return item.charAt(0).toUpperCase() + item.substring(1);
+}
+
 export {
   updateItem,
   isMinorChange,
@@ -85,4 +88,5 @@ export {
   getTripRoute,
   getTripPeriod,
   getTripFullCost,
+  toUpperCaseFirstSign,
 };
