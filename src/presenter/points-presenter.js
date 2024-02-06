@@ -6,7 +6,7 @@ import SortPresenter from './sort-presenter.js';
 import {sorting} from '../utils/sort.js';
 import {filter} from '../utils/filter.js';
 import AddPointPresenter from './add-point-presenter.js';
-import LoaderView from '../view/loading-view.js';
+import LoaderView from '../view/loader-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import EmptyEventPointsListView from '../view/empty-event-points-list-view.js';
 export default class PointsPresenter {
